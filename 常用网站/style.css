@@ -1,0 +1,175 @@
+/* ------------------------------------- */
+/* 页面基础样式 */
+/* ------------------------------------- */
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    background-image: url('img/1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ------------------------------------- */
+/* 文件夹和链接的通用样式 */
+/* ------------------------------------- */
+
+.directory-tree {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.folder-item, .link-item {
+    position: relative;
+}
+
+.folder-name {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    margin: 5px 0;
+    /* 修正：display:block让它独占一行，便于点击 */
+    display: block; 
+}
+
+.links a {
+    display: block;
+    color: rgb(255, 165, 0);
+    text-decoration: none;
+    margin: 8px 0;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.folder-content {
+    display: none;
+}
+
+/* ------------------------------------- */
+/* 树形结构和缩进 */
+/* ------------------------------------- */
+
+.folder-name, .links a {
+    padding-left: 20px;
+}
+
+.folder-content {
+    margin-left: 20px;
+}
+
+.folder-item::before, .link-item::before {
+    position: absolute;
+    left: 0;
+    color: #888;
+    font-size: 20px;
+    pointer-events: none;
+}
+
+.directory-tree > .folder-item:first-child::before { content: "┌ "; }
+.directory-tree > .folder-item:not(:first-child):not(:last-child)::before { content: "├ "; }
+.directory-tree > .folder-item:last-child::before { content: "└ "; }
+
+.folder-content > .link-item:not(:last-child)::before { content: "├ "; }
+.folder-content > .link-item:last-child::before { content: "└ "; }
+
+.folder-content > .folder-item:not(:last-child)::before { content: "├ "; }
+.folder-content > .folder-item:last-child::before { content: "└ "; }
+
+/* ------------------------------------- */
+/* 层级递减的字体大小 */
+/* ------------------------------------- */
+
+.directory-tree > .folder-item > .folder-name {
+    font-size: 30px;
+}
+
+.folder-content > .folder-item > .folder-name {
+    font-size: 25px;
+}
+.folder-content > .link-item > a {
+    font-size: 20px;
+}
+
+.folder-content > .folder-item > .folder-content > .link-item > a {
+    font-size: 18px;
+}
+
+/* ------------------------------------- */
+/* 电子木鱼样式 (最终版) */
+/* ------------------------------------- */
+
+.muyu-widget-container {
+    position: fixed;
+    top: 50%;
+    right: 150px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100; /* 关键：确保木鱼模块位于所有其他元素之上 */
+}
+
+.muyu-container {
+    position: relative;
+    cursor: pointer;
+    /* 容器自适应图片大小，但保持 block 属性以便 event.stopPropagation() 有效 */
+    display: block;
+}
+
+#muyu {
+    width: 300px;
+    height: auto;
+    transition: transform 0.1s ease-out;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+    /* 将图片本身也设置为 block，并移除其底部空白 */
+    display: block;
+    line-height: 0;
+}
+
+.muyu-container.clicked #muyu {
+    transform: scale(0.95);
+}
+
+#merit-counter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.merit-text {
+    position: absolute;
+    font-size: 2em;
+    font-weight: bold;
+    white-space: nowrap;
+    animation: fly-up 1s ease-out forwards;
+    opacity: 0;
+    top: -50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+@keyframes fly-up {
+    0% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -100px);
+        opacity: 0;
+    }
+}
